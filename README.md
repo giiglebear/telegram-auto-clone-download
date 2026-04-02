@@ -1,8 +1,3 @@
-# telegram-auto-clone-download
-I'll fetch the main.py file from your repository so I can generate a README based on it.Based on the `main.py` file, here's a comprehensive README for your project:
-
----
-
 # Telegram Auto Clone Download
 
 An automated Telegram monitoring and mirroring tool that monitors multiple source channels for new media, downloads files, uploads them to a destination channel, and stores them locally.
