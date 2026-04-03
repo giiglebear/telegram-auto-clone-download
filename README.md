@@ -1,46 +1,29 @@
 # Telegram Auto Clone Download
 
-![Python](https://img.shields.io/badge/python-3.8%2B-blue.svg) ![Telethon](https://img.shields.io/badge/telethon-1.21.1-blue.svg)
-
-## Description
-This repository provides a powerful tool for automating the download of files from Telegram using the Telethon library. It enables users to copy files from Telegram channels and groups seamlessly, enhancing productivity for users who frequently engage with Telegram.
+## Introduction
+Welcome to the **Telegram Auto Clone Download**! This project automates the downloading of files from Telegram groups and channels using a user-friendly interface. With this tool, you can easily manage your downloads, ensuring you never miss out on important files.
 
 ### Keywords
-automation, Telegram, Telethon, download, file transfer, productivity, messaging
+Telegram, automation, clone, download, bot
+
+---
 
 ## Features
-- Efficient file cloning from Telegram groups and channels.
-- Customizable configuration settings for different use cases.
-- Supports multiple file types and sizes.
-- User-friendly command-line interface.
+- **Automated Downloads**: Automatically downloads files from specified Telegram channels and groups.
+- **User-Friendly**: Simple configuration and usage processes.
+- **Multi-File Support**: Supports downloading multiple files simultaneously.
+- **Customization Options**: Easily configure settings according to your needs.
 
-## Use Cases
-1. **Backup Important Files:** Automatically save files shared in Telegram groups to a local storage.
-2. **Media Collection:** Gather all media files from your favorite Telegram channels.
-3. **Content Curation:** Compile content from multiple sources for research or projects.
+---
 
-## Quick Start Guide
-### Prerequisites
-- Install Python 3.8 or higher.
-- Install Telethon library:
-  ```bash
-  pip install telethon
-  ```
+## System Requirements
+- **Python 3.x**: This tool is built using Python, ensure you have the latest version.
+- **Telegram account**: You will need a Telegram account to use this tool.
+- **Internet Connection**: Requires a stable internet connection for downloading files.
 
-### Configuration
-1. Clone the repository:
+---
+
+## Installation Steps
+1. **Clone the Repository**:
    ```bash
    git clone https://github.com/giiglebear/telegram-auto-clone-download.git
-   cd telegram-auto-clone-download
-   ```
-2. Update the configuration file with your API ID and hash from Telegram.
-3. Run the script:
-   ```bash
-   python main.py
-   ```
-
-## Configuration Instructions
-Refer to `config_example.toml` for configuration details. Make sure to replace placeholders with your actual values.
-
-## License
-This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for more information.
