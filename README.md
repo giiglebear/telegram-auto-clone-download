@@ -1,266 +1,162 @@
-![Python](https://img.shields.io/badge/python-3.8%2B-blue.svg) ![Telethon](https://img.shields.io/badge/telethon-1.21.1-blue.svg) ![License](https://img.shields.io/badge/license-MIT-green.svg)
+# Telegram Auto Clone Download
 
-## 📋 Table of Contents
-- [Overview](#overview)
-- [Features](#features)
-- [Use Cases](#use-cases)
-- [Quick Start](#quick-start)
-- [Installation](#installation)
-- [Configuration](#configuration)
-- [Usage](#usage)
-- [Troubleshooting](#troubleshooting)
-- [Contributing](#contributing)
-- [License](#license)
+Automated Telegram channel mirroring tool with multi-channel monitoring, auto-download, and local storage capabilities.
 
-## 🎯 Overview
+## 📋 Overview
 
-**Telegram Auto Clone Download** is a powerful Python automation tool that enables seamless downloading and cloning of files from Telegram channels and groups. Built with the Telethon library, this tool simplifies the process of batch downloading media, documents, and other files from Telegram directly to your local storage.
-
-**Keywords:** Telegram downloader, Telethon automation, file cloning, media backup, Telegram bot, Python automation, batch download
+This tool automatically monitors one or more Telegram channels for new media and messages, downloads them, re-uploads them to a destination channel, and stores them locally. It features robust error handling, automatic reconnection, and memory optimization.
 
 ## ✨ Features
 
-- ⚡ **Efficient File Cloning** - Automatically download files from Telegram channels and groups
-- 🎛️ **Customizable Configuration** - Flexible settings for different use cases and requirements
-- 📁 **Multiple File Type Support** - Handle images, videos, documents, audio, and more
-- 💾 **Batch Download** - Download multiple files simultaneously with efficient processing
-- 🖥️ **User-Friendly CLI** - Simple command-line interface for easy operation
-- 🔄 **Resume Support** - Resume interrupted downloads without re-downloading
-- 📊 **Progress Tracking** - Real-time progress indicators and detailed logging
-- 🛡️ **Secure Authentication** - Safe handling of Telegram API credentials
+- **Multi-Channel Monitoring**: Monitor multiple source channels simultaneously
+- **Auto-Download & Re-upload**: Automatically downloads media from source channels and uploads to destination
+- **Local Storage**: Saves all downloaded files to a local directory
+- **Text Cloning**: Copies text messages without media to the destination channel
+- **File Size Control**: Configurable maximum file size limit (default: 500MB)
+- **Progress Tracking**: Real-time progress bars for download and upload operations
+- **Error Handling**: Comprehensive error handling with automatic reconnection on network failures
+- **Memory Optimization**: Automatic maintenance loop to clean temporary files and optimize memory usage (runs daily)
+- **Resilient Connection**: Automatic reconnection with configurable retry delays
 
-## 💡 Use Cases
+## 🛠️ Installation
 
-1. **📦 Backup Important Files** - Automatically save and archive files from important Telegram channels and groups to local storage
-2. **🎨 Media Collection** - Gather media libraries from your favorite Telegram channels for offline viewing
-3. **📖 Content Curation** - Compile and organize content from multiple sources for research, projects, or knowledge bases
-4. **📚 Channel Archiving** - Create complete backups of Telegram channel content for long-term preservation
-5. **🤖 Batch Processing** - Automate repetitive download tasks across multiple channels
+### Requirements
+- Python 3.7+
+- Telethon library
 
-## 🚀 Quick Start
+### Setup
 
-Get up and running in 5 minutes:
-
+1. Clone the repository:
 ```bash
-# Clone the repository
 git clone https://github.com/giiglebear/telegram-auto-clone-download.git
 cd telegram-auto-clone-download
-
-# Create virtual environment
-python3 -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Configure your API credentials
-cp config_example.toml config.toml
-# Edit config.toml with your Telegram API details
-
-# Run the application
-python main.py
 ```
 
-## 📦 Installation
-
-### System Requirements
-
-| Requirement | Version |
-|------------|---------|
-| Python | 3.8 or higher |
-| pip | Latest |
-| Operating System | Windows, macOS, Linux |
-| RAM | Minimum 512 MB |
-| Disk Space | Varies (depends on downloads) |
-
-### Prerequisites Checklist
-
-- [ ] Python 3.8+ installed on your system
-- [ ] pip package manager available
-- [ ] Telegram account (with API credentials)
-- [ ] Internet connection
-- [ ] ~500 MB free disk space
-
-### Step-by-Step Installation
-
-1. **Clone the Repository**
-   ```bash
-   git clone https://github.com/giiglebear/telegram-auto-clone-download.git
-   cd telegram-auto-clone-download
-   ```
-
-2. **Create Virtual Environment** (Recommended)
-   ```bash
-   python3 -m venv venv
-   source venv/bin/activate
-   # On Windows: venv\Scripts\activate
-   ```
-
-3. **Install Dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
-   
-   Key dependencies:
-   - Telethon 1.21.1 or higher
-   - Other required packages as listed in requirements.txt
+2. Install dependencies:
+```bash
+pip install telethon
+```
 
 ## ⚙️ Configuration
 
-### Getting Telegram API Credentials
+Edit the `main.py` file and configure the following variables:
 
-1. Visit [my.telegram.org](https://my.telegram.org)
-2. Log in with your Telegram account
-3. Go to "API development tools"
-4. Create a new application
-5. Note your `API_ID` and `API_HASH`
+### 1. **Telegram API Credentials**
+```python
+API_ID = 00000           # Get from https://my.telegram.org/apps
+API_HASH = ""            # Get from https://my.telegram.org/apps
+```
 
-### Setting Up Configuration File
+### 2. **Channel IDs**
+```python
+SOURCE_IDS = [-10000000000, -10000000000]  # Source channels (can add multiple)
+DEST_ID = -10000000000                     # Destination channel
+```
 
-1. Copy the example configuration:
-   ```bash
-   cp config_example.toml config.toml
-   ```
+**How to get Channel IDs:**
+1. Go to [Telegram Web](https://web.telegram.org/a/)
+2. Open the desired channel
+3. Look at the URL: `https://web.telegram.org/a/#-100XXXXXXXX`
+4. Copy the ID: `-100XXXXXXXX`
 
-2. Edit `config.toml` with your credentials:
-   ```toml
-   [telegram]
-   api_id = YOUR_API_ID_HERE
-   api_hash = "YOUR_API_HASH_HERE"
-   phone_number = "+1234567890"
-   
-   [download]
-   output_directory = "./downloads"
-   download_threads = 4
-   max_file_size_mb = 2000
-   
-   [channels]
-   channel_list = [
-       "channel_name_1",
-       "channel_name_2"
-   ]
-   ```
+### 3. **Storage Configuration**
+```python
+MAX_FILE_SIZE = 500 * 1024 * 1024  # Maximum file size in bytes (500MB default)
+FINAL_STORAGE = r"C:\Telegram"      # Local directory for storage
+```
 
-3. Ensure proper permissions on the config file:
-   ```bash
-   chmod 600 config.toml
-   ```
+## 🚀 Usage
 
-## 🎮 Usage
-
-### Basic Usage
-
-Start the application with default settings:
+Run the script:
 ```bash
 python main.py
 ```
 
-### Advanced Options
+### Output Example
+```
+Connecting to Telegram...
 
-```bash
-# Download from specific channel
-python main.py --channel channel_name
+============================================================
+   STEP 1: CHANNEL VERIFICATION
+============================================================
+ [SOURCE] ID: -1001234567890 | NAME: My Source Channel
+ [DEST]   ID: -1009876543210 | NAME: My Destination Channel
 
-# Set custom output directory
-python main.py --output /path/to/directory
+============================================================
+   STEP 2: MONITORING ENGINE ACTIVE
+============================================================
 
-# Download with specific file types
-python main.py --types "document,video,photo"
-
-# Dry run (show what will be downloaded without downloading)
-python main.py --dry-run
-
-# Enable verbose logging
-python main.py --verbose
+[14:30:45] DETECTED: New media in 'My Source Channel'
+   [1/2] Downloading: [100.0%] (5242 / 5242 KB)
+   [2/2] Uploading: [100.0%] (5242 / 5242 KB)
+ ✅ SUCCESS: video_123.mp4 saved to D: Drive.
 ```
 
-### Example Workflows
+## 🔄 How It Works
 
-**Download all photos from a channel:**
-```bash
-python main.py --channel mychannel --types "photo" --output ~/downloads/photos
-```
+1. **Connection**: Establishes connection to Telegram with automatic reconnection
+2. **Verification**: Lists and verifies all configured source and destination channels
+3. **Monitoring**: Listens for new messages in source channels
+4. **Processing**:
+   - For media files: Downloads → Uploads → Saves locally
+   - For text messages: Copies directly to destination
+   - Skips files exceeding the size limit
+5. **Maintenance**: Daily cleanup of temporary files and memory optimization
 
-**Batch download from multiple channels:**
-```bash
-python main.py --channels channel1 channel2 channel3
-```
+## 🛡️ Error Handling
 
-**Resume interrupted downloads:**
-```bash
-python main.py --resume
-```
+The tool handles various error scenarios:
 
-## 🔧 Troubleshooting
+| Error | Action |
+|-------|--------|
+| Network/Connection Error | Waits 10 seconds and reconnects |
+| Semaphore Timeout (WinError 121) | Retries upload up to 3 times |
+| File Too Large | Skips file and logs message |
+| General Exception | Restarts engine with 5-second delay |
 
-### Common Issues and Solutions
+## 📊 Performance Features
 
-| Issue | Cause | Solution |
-|-------|-------|----------|
-| `API_ID not found` | Missing config.toml | Run `cp config_example.toml config.toml` and add your credentials |
-| `Authentication failed` | Wrong API credentials | Verify API_ID and API_HASH from my.telegram.org |
-| `Connection timeout` | Network issues | Check internet connection, try again later |
-| `Permission denied` | File permissions issue | Run `chmod 600 config.toml` on Linux/macOS |
-| `Out of memory` | Too many files downloading | Reduce `download_threads` in config.toml |
-| `Download interrupted` | Network interruption | Use `--resume` flag to continue |
+- **Temporary Buffer**: Uses temp_buffer directory to manage downloads during processing
+- **Memory Cleanup**: Automatic entity cache clearing and garbage collection every 24 hours
+- **Progress Callbacks**: Real-time KB/s progress reporting for uploads and downloads
 
-### Debug Mode
+## ⚠️ Important Notes
 
-Enable verbose logging for troubleshooting:
-```bash
-python main.py --verbose --log-level DEBUG
-```
+- Ensure you have proper permissions for source and destination channels
+- The destination channel should be a supergroup/broadcast channel you own or have admin access to
+- Large files may take significant time to process
+- The tool runs continuously; use Ctrl+C to stop
+- All downloaded files are stored in the configured `FINAL_STORAGE` directory
 
-Check logs in `logs/` directory for detailed information.
+## 🔐 Security
 
-### Getting Help
+- Never share your API credentials or session files
+- The session file (`pc_mirror_resilient`) is created locally and contains your auth token
+- Keep the configuration file secure
 
-- Check the [GitHub Issues](https://github.com/giiglebear/telegram-auto-clone-download/issues) page
-- Review configuration examples in `config_example.toml`
-- Enable verbose mode for detailed error messages
+## 🐛 Troubleshooting
+
+**Connection keeps dropping?**
+- Check internet stability
+- The tool automatically reconnects; check logs for persistent errors
+
+**Files not uploading?**
+- Verify you have admin permissions in the destination channel
+- Check file size against `MAX_FILE_SIZE` limit
+- Ensure sufficient storage space
+
+**Out of memory?**
+- The maintenance loop runs daily; increase cleanup frequency if needed
+- Reduce `MAX_FILE_SIZE` to avoid large file buffering
+
+## 📝 License
+
+Specify your license here
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please follow these steps:
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+## 💬 Support
 
-### Development Setup
-
-```bash
-# Clone your fork
-git clone https://github.com/YOUR_USERNAME/telegram-auto-clone-download.git
-
-# Install development dependencies
-pip install -r requirements-dev.txt
-
-# Run tests
-pytest
-
-# Format code
-black .
-```
-
-## 📚 Additional Resources
-
-- [Telethon Documentation](https://docs.telethon.dev/)
-- [Telegram Bot API](https://core.telegram.org/api)
-- [Python Best Practices](https://pep8.org/)
-
-## 📄 License
-
-This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.
-
-## ⚠️ Disclaimer
-
-This tool is for personal use only. Ensure you have permission to download files from the channels/groups you're accessing. Respect copyright and privacy laws in your jurisdiction.
-
----
-
-**Star ⭐ this repository if you found it useful!**
-
-**Last Updated:** 2026-04-03 04:20:10
+For issues or questions, please open a GitHub issue.
